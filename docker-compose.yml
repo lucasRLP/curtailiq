@@ -1,0 +1,32 @@
+services:
+  backend:
+    image: ghcr.io/ufrj-analytica/energython-backend:latest
+    restart: unless-stopped
+    env_file: backend/.env
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.energython-api.entrypoints=websecure"
+      - "traefik.http.routers.energython-api.rule=Host(`energython-api.cognati.tech`)"
+      - "traefik.http.routers.energython-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.energython-api.loadbalancer.server.port=8000"
+
+  frontend:
+    image: ghcr.io/ufrj-analytica/energython-frontend:latest
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.energython.entrypoints=websecure"
+      - "traefik.http.routers.energython.rule=Host(`energython.cognati.tech`)"
+      - "traefik.http.routers.energython.tls.certresolver=letsencrypt"
+      - "traefik.http.services.energython.loadbalancer.server.port=80"

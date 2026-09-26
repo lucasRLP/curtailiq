@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary -->
+    <title>CurtailIQ — Gestão inteligente de curtailment para geradoras renováveis</title>
+    <meta name="description" content="Plataforma de análise e ressarcimento de curtailment para usinas solares e eólicas. Monitore perdas, identifique eventos elegíveis e gere dossiês de pleito com base na regulação vigente." />
+    <meta name="keywords" content="curtailment, energia renovável, solar, eólica, ressarcimento, ANEEL, pleito regulatório, geração distribuída, ONS, submercado NE" />
+    <meta name="author" content="UFRJ Analytica" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://energython.cognati.tech" />
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://energython.cognati.tech" />
+    <meta property="og:site_name" content="CurtailIQ" />
+    <meta property="og:title" content="CurtailIQ — Gestão inteligente de curtailment" />
+    <meta property="og:description" content="Monitore perdas por curtailment, identifique eventos ressarcíveis e gere dossiês de pleito para usinas solares e eólicas no Brasil." />
+    <meta property="og:image" content="https://energython.cognati.tech/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="CurtailIQ — Plataforma de gestão de curtailment" />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://energython.cognati.tech" />
+    <meta name="twitter:title" content="CurtailIQ — Gestão inteligente de curtailment" />
+    <meta name="twitter:description" content="Monitore perdas por curtailment, identifique eventos ressarcíveis e gere dossiês de pleito para usinas solares e eólicas no Brasil." />
+    <meta name="twitter:image" content="https://energython.cognati.tech/og-image.png" />
+    <meta name="twitter:image:alt" content="CurtailIQ — Plataforma de gestão de curtailment" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#0b1119" />
+    <meta name="color-scheme" content="dark light" />
+
+    <!--
+      Aplica o tema antes da primeira pintura. Sem isto a página nasce clara e
+      pisca em branco até o React montar o ThemeProvider — o pior defeito
+      visível de um app que abre escuro por padrão.
+    -->
+    <script>
+      (function () {
+        try {
+          var salvo = localStorage.getItem("theme")
+          var tema = salvo === "light" || salvo === "dark" ? salvo : null
+          if (!tema && salvo === "system") {
+            tema = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+          }
+          document.documentElement.classList.add(tema || "dark")
+        } catch (e) {
+          document.documentElement.classList.add("dark")
+        }
+      })()
+    </script>
+    <style>
+      /* Cor de fundo já no HTML, para o flash não acontecer nem antes do CSS. */
+      html { background: #0b1119; }
+      html.light { background: #f6f8f9; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,713 @@
+{
+  "is_simulated": true,
+  "method": "synthetic-sensitivity-v1",
+  "config": {
+    "seed": 42,
+    "days": 2,
+    "turbines": 6,
+    "nominal_mw": 3,
+    "teams": 2,
+    "max_wind_ms": 12,
+    "battery_mwh": 12,
+    "battery_mw": 3,
+    "efficiency": 0.9,
+    "degradation_brl_mwh": 30,
+    "energy_price_brl_mwh": 250
+  },
+  "runs": [
+    {
+      "scenario_id": "ecdc1a840fdc29dc",
+      "seed": 0,
+      "summary": {
+        "available_mwh": 332.5331684198667,
+        "baseline_export_mwh": 237.65546030781215,
+        "scheduled_export_mwh": 245.8296788197802,
+        "battery_export_mwh": 268.5980779729926,
+        "maintenance_saving_brl": 2043.5546279920216,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "74ba6f2ddb4078bc",
+      "seed": 1,
+      "summary": {
+        "available_mwh": 331.0716585677744,
+        "baseline_export_mwh": 236.76928252389845,
+        "scheduled_export_mwh": 245.01573451101603,
+        "battery_export_mwh": 267.78413366422853,
+        "maintenance_saving_brl": 2061.612996779392,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "7b5b8e13e430fcf7",
+      "seed": 2,
+      "summary": {
+        "available_mwh": 330.86643650706895,
+        "baseline_export_mwh": 238.0316254148003,
+        "scheduled_export_mwh": 246.46957901762624,
+        "battery_export_mwh": 269.2379781708384,
+        "maintenance_saving_brl": 2109.4884007064734,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "9ca0479e5ff0473c",
+      "seed": 3,
+      "summary": {
+        "available_mwh": 331.82101062820874,
+        "baseline_export_mwh": 237.76022396802134,
+        "scheduled_export_mwh": 246.2156924215946,
+        "battery_export_mwh": 268.9840915748068,
+        "maintenance_saving_brl": 2113.8671133933117,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "214f8bf1afd1eb5e",
+      "seed": 4,
+      "summary": {
+        "available_mwh": 330.5294757340538,
+        "baseline_export_mwh": 237.63131456043004,
+        "scheduled_export_mwh": 245.606718353405,
+        "battery_export_mwh": 268.37511750661736,
+        "maintenance_saving_brl": 1993.85094824376,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "f9616c13f4067805",
+      "seed": 5,
+      "summary": {
+        "available_mwh": 331.51473822288307,
+        "baseline_export_mwh": 239.57103018276212,
+        "scheduled_export_mwh": 247.5014502269612,
+        "battery_export_mwh": 270.26984938017364,
+        "maintenance_saving_brl": 1982.605011049771,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "bd763ddeb4d46210",
+      "seed": 6,
+      "summary": {
+        "available_mwh": 330.8602697999261,
+        "baseline_export_mwh": 238.66382292007057,
+        "scheduled_export_mwh": 246.71757973691172,
+        "battery_export_mwh": 269.48597889012393,
+        "maintenance_saving_brl": 2013.4392042102913,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "f9bfbf0b894d613c",
+      "seed": 7,
+      "summary": {
+        "available_mwh": 330.7308910054586,
+        "baseline_export_mwh": 237.0501432212157,
+        "scheduled_export_mwh": 245.26511245868372,
+        "battery_export_mwh": 268.0335116118961,
+        "maintenance_saving_brl": 2053.742309367005,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "1b6bd1102ad0dd38",
+      "seed": 8,
+      "summary": {
+        "available_mwh": 331.77394176936315,
+        "baseline_export_mwh": 238.1046454172107,
+        "scheduled_export_mwh": 246.3004169886746,
+        "battery_export_mwh": 269.0688161418868,
+        "maintenance_saving_brl": 2048.9428928659822,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "6f9044ff13002a9e",
+      "seed": 9,
+      "summary": {
+        "available_mwh": 329.17176974334205,
+        "baseline_export_mwh": 236.27766601524527,
+        "scheduled_export_mwh": 244.22652811721125,
+        "battery_export_mwh": 266.9949272704237,
+        "maintenance_saving_brl": 1987.2155254914883,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "cf5d81de278cd4f1",
+      "seed": 10,
+      "summary": {
+        "available_mwh": 331.02712352020677,
+        "baseline_export_mwh": 238.43620356188737,
+        "scheduled_export_mwh": 246.56880156233518,
+        "battery_export_mwh": 269.3372007155476,
+        "maintenance_saving_brl": 2033.1495001119404,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "e0eb8ed8f39953db",
+      "seed": 11,
+      "summary": {
+        "available_mwh": 330.8181296530501,
+        "baseline_export_mwh": 238.2444402170704,
+        "scheduled_export_mwh": 246.42572312287393,
+        "battery_export_mwh": 269.19412227608603,
+        "maintenance_saving_brl": 2045.3207264508885,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "64ed74c6ead64e7a",
+      "seed": 12,
+      "summary": {
+        "available_mwh": 330.1404489827782,
+        "baseline_export_mwh": 237.61882065963664,
+        "scheduled_export_mwh": 245.81062222109045,
+        "battery_export_mwh": 268.57902137430295,
+        "maintenance_saving_brl": 2047.9503903634636,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "a51460ff0496797c",
+      "seed": 13,
+      "summary": {
+        "available_mwh": 329.7531385813349,
+        "baseline_export_mwh": 236.14878473417926,
+        "scheduled_export_mwh": 244.00525788779598,
+        "battery_export_mwh": 266.7736570410084,
+        "maintenance_saving_brl": 1964.1182884041634,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "80f49c0d1a1f0d88",
+      "seed": 14,
+      "summary": {
+        "available_mwh": 330.3495119323346,
+        "baseline_export_mwh": 238.42597754171675,
+        "scheduled_export_mwh": 246.3769772869128,
+        "battery_export_mwh": 269.14537644012523,
+        "maintenance_saving_brl": 1987.7499362990197,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "08ee34644c587613",
+      "seed": 15,
+      "summary": {
+        "available_mwh": 333.091121896302,
+        "baseline_export_mwh": 239.35157139841263,
+        "scheduled_export_mwh": 247.38087807336646,
+        "battery_export_mwh": 270.14927722657893,
+        "maintenance_saving_brl": 2007.3266687384544,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "f871cc709bd15332",
+      "seed": 16,
+      "summary": {
+        "available_mwh": 328.9068421955471,
+        "baseline_export_mwh": 237.290464495583,
+        "scheduled_export_mwh": 245.3627787470269,
+        "battery_export_mwh": 268.1311779002393,
+        "maintenance_saving_brl": 2018.0785628609713,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "7bea4d183e85e5b7",
+      "seed": 17,
+      "summary": {
+        "available_mwh": 331.0298561305154,
+        "baseline_export_mwh": 238.03940291263936,
+        "scheduled_export_mwh": 246.25440873051,
+        "battery_export_mwh": 269.02280788372224,
+        "maintenance_saving_brl": 2053.751454467655,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "a379f7d9db60d648",
+      "seed": 18,
+      "summary": {
+        "available_mwh": 331.34005974669003,
+        "baseline_export_mwh": 238.44267099481533,
+        "scheduled_export_mwh": 246.4088468831099,
+        "battery_export_mwh": 269.1772460363223,
+        "maintenance_saving_brl": 1991.5439720736567,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "0f19d422b28974c3",
+      "seed": 19,
+      "summary": {
+        "available_mwh": 328.34722037534493,
+        "baseline_export_mwh": 236.62806460264085,
+        "scheduled_export_mwh": 244.6318434418654,
+        "battery_export_mwh": 267.4002425950776,
+        "maintenance_saving_brl": 2000.9447098061426,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "4705be94d35c7a61",
+      "seed": 20,
+      "summary": {
+        "available_mwh": 328.37745727022985,
+        "baseline_export_mwh": 237.0207630070059,
+        "scheduled_export_mwh": 245.21484954965754,
+        "battery_export_mwh": 267.98324870286996,
+        "maintenance_saving_brl": 2048.5216356629144,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "59d911cff46add4e",
+      "seed": 21,
+      "summary": {
+        "available_mwh": 331.9088041604471,
+        "baseline_export_mwh": 238.14798862048804,
+        "scheduled_export_mwh": 246.51071304185587,
+        "battery_export_mwh": 269.2791121950681,
+        "maintenance_saving_brl": 2090.6811053419533,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "dde203cf0ec930f8",
+      "seed": 22,
+      "summary": {
+        "available_mwh": 331.00921696457505,
+        "baseline_export_mwh": 237.93617492135135,
+        "scheduled_export_mwh": 246.12327397955963,
+        "battery_export_mwh": 268.8916731327719,
+        "maintenance_saving_brl": 2046.7747645520565,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "0cee25938b7a0807",
+      "seed": 23,
+      "summary": {
+        "available_mwh": 331.6949802000001,
+        "baseline_export_mwh": 237.36046168166763,
+        "scheduled_export_mwh": 245.35963015981196,
+        "battery_export_mwh": 268.1280293130245,
+        "maintenance_saving_brl": 1999.7921195360768,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "0c30d3d1b96f66a8",
+      "seed": 24,
+      "summary": {
+        "available_mwh": 331.8268444849352,
+        "baseline_export_mwh": 239.14694368148548,
+        "scheduled_export_mwh": 247.33503814836402,
+        "battery_export_mwh": 270.10343730157626,
+        "maintenance_saving_brl": 2047.0236167196313,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "964f73e5eef9c10e",
+      "seed": 25,
+      "summary": {
+        "available_mwh": 328.80850393585183,
+        "baseline_export_mwh": 236.67831223378198,
+        "scheduled_export_mwh": 244.64115756685572,
+        "battery_export_mwh": 267.4095567200682,
+        "maintenance_saving_brl": 1990.711333268439,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "b0ef7a2232e830d8",
+      "seed": 26,
+      "summary": {
+        "available_mwh": 329.6694574054872,
+        "baseline_export_mwh": 237.54866066377,
+        "scheduled_export_mwh": 245.6716329916983,
+        "battery_export_mwh": 268.44003214491073,
+        "maintenance_saving_brl": 2030.7430819820827,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "d4037e8e4d9700b4",
+      "seed": 27,
+      "summary": {
+        "available_mwh": 330.99337915639074,
+        "baseline_export_mwh": 238.27434204098913,
+        "scheduled_export_mwh": 246.38209947154334,
+        "battery_export_mwh": 269.15049862475564,
+        "maintenance_saving_brl": 2026.9393576385482,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "75a3fb901764a5ca",
+      "seed": 28,
+      "summary": {
+        "available_mwh": 329.9301611329416,
+        "baseline_export_mwh": 236.539904051905,
+        "scheduled_export_mwh": 244.6691773593161,
+        "battery_export_mwh": 267.4375765125284,
+        "maintenance_saving_brl": 2032.3183268527682,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    },
+    {
+      "scenario_id": "682d066175a1b59c",
+      "seed": 29,
+      "summary": {
+        "available_mwh": 330.75157095375545,
+        "baseline_export_mwh": 238.30889379229183,
+        "scheduled_export_mwh": 246.58667726535987,
+        "battery_export_mwh": 269.35507641857214,
+        "maintenance_saving_brl": 2069.445868267009,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      }
+    }
+  ],
+  "statistics": {
+    "maintenance_saving_brl": {
+      "mean": 2031.3734816499111,
+      "std": 36.477628586049434,
+      "min": 1964.1182884041634,
+      "max": 2113.8671133933117
+    },
+    "battery_net_value_brl": {
+      "mean": 5009.047813706715,
+      "std": 0.0,
+      "min": 5009.047813706715,
+      "max": 5009.047813706715
+    },
+    "recovered_mwh": {
+      "mean": 22.768399153212336,
+      "std": 0.0,
+      "min": 22.768399153212336,
+      "max": 22.768399153212336
+    },
+    "unallocated_tasks": {
+      "mean": 0,
+      "std": 0.0,
+      "min": 0,
+      "max": 0
+    }
+  },
+  "sensitivities": [
+    {
+      "label": "sem_bateria",
+      "config": {
+        "seed": 42,
+        "days": 2,
+        "turbines": 6,
+        "nominal_mw": 3.0,
+        "teams": 2,
+        "max_wind_ms": 12.0,
+        "battery_mwh": 0.0,
+        "battery_mw": 0.0,
+        "efficiency": 0.9,
+        "degradation_brl_mwh": 30.0,
+        "energy_price_brl_mwh": 250.0
+      },
+      "summary": {
+        "available_mwh": 331.1779049292762,
+        "baseline_export_mwh": 238.12451167799716,
+        "scheduled_export_mwh": 246.03756197660655,
+        "battery_export_mwh": 246.03756197660655,
+        "maintenance_saving_brl": 1978.262574652376,
+        "battery_net_value_brl": 0.0,
+        "recovered_mwh": 0.0,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 0.0,
+        "battery_losses_mwh": 0.0
+      },
+      "scenario_id": "33535a338d4c59a7"
+    },
+    {
+      "label": "uma_equipe",
+      "config": {
+        "seed": 42,
+        "days": 2,
+        "turbines": 6,
+        "nominal_mw": 3.0,
+        "teams": 1,
+        "max_wind_ms": 12.0,
+        "battery_mwh": 12.0,
+        "battery_mw": 3.0,
+        "efficiency": 0.9,
+        "degradation_brl_mwh": 30.0,
+        "energy_price_brl_mwh": 250.0
+      },
+      "summary": {
+        "available_mwh": 331.1779049292762,
+        "baseline_export_mwh": 240.39411489764072,
+        "scheduled_export_mwh": 246.03756197660655,
+        "battery_export_mwh": 268.80596112981897,
+        "maintenance_saving_brl": 1410.8617697414552,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      },
+      "scenario_id": "a8d6df2dc88d321e"
+    },
+    {
+      "label": "vento_10",
+      "config": {
+        "seed": 42,
+        "days": 2,
+        "turbines": 6,
+        "nominal_mw": 3.0,
+        "teams": 2,
+        "max_wind_ms": 10.0,
+        "battery_mwh": 12.0,
+        "battery_mw": 3.0,
+        "efficiency": 0.9,
+        "degradation_brl_mwh": 30.0,
+        "energy_price_brl_mwh": 250.0
+      },
+      "summary": {
+        "available_mwh": 331.1779049292762,
+        "baseline_export_mwh": 234.84066909483155,
+        "scheduled_export_mwh": 234.84066909483155,
+        "battery_export_mwh": 257.6090682480439,
+        "maintenance_saving_brl": 0.0,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      },
+      "scenario_id": "a0eb9daa75eb112a"
+    },
+    {
+      "label": "vento_12",
+      "config": {
+        "seed": 42,
+        "days": 2,
+        "turbines": 6,
+        "nominal_mw": 3.0,
+        "teams": 2,
+        "max_wind_ms": 12.0,
+        "battery_mwh": 12.0,
+        "battery_mw": 3.0,
+        "efficiency": 0.9,
+        "degradation_brl_mwh": 30.0,
+        "energy_price_brl_mwh": 250.0
+      },
+      "summary": {
+        "available_mwh": 331.1779049292762,
+        "baseline_export_mwh": 238.12451167799716,
+        "scheduled_export_mwh": 246.03756197660655,
+        "battery_export_mwh": 268.80596112981897,
+        "maintenance_saving_brl": 1978.262574652376,
+        "battery_net_value_brl": 5009.047813706715,
+        "recovered_mwh": 22.768399153212336,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 25.298221281347033,
+        "battery_losses_mwh": 2.529822128134697
+      },
+      "scenario_id": "22925cb2d820ab57"
+    },
+    {
+      "label": "desgaste_alto",
+      "config": {
+        "seed": 42,
+        "days": 2,
+        "turbines": 6,
+        "nominal_mw": 3.0,
+        "teams": 2,
+        "max_wind_ms": 12.0,
+        "battery_mwh": 12.0,
+        "battery_mw": 3.0,
+        "efficiency": 0.9,
+        "degradation_brl_mwh": 10000.0,
+        "energy_price_brl_mwh": 250.0
+      },
+      "summary": {
+        "available_mwh": 331.1779049292762,
+        "baseline_export_mwh": 238.12451167799716,
+        "scheduled_export_mwh": 246.03756197660655,
+        "battery_export_mwh": 246.03756197660655,
+        "maintenance_saving_brl": 1978.262574652376,
+        "battery_net_value_brl": 0.0,
+        "recovered_mwh": 0.0,
+        "unallocated_tasks": 0,
+        "final_soc_mwh": 0,
+        "charged_mwh": 0.0,
+        "battery_losses_mwh": 0.0
+      },
+      "scenario_id": "06c271eb949568fa"
+    }
+  ],
+  "warnings": [
+    "Sementes variam somente vento sintético; ordens e padrão de restrição são fixos.",
+    "Dispersão não mede generalização entre parques/anos nem incerteza de ML.",
+    "Agenda usa informação perfeita retrospectiva e não é ótimo global certificado.",
+    "Valores do horizonte, não anualizados; sem comprovação de economia de cliente."
+  ]
+}

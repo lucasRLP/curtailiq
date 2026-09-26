@@ -1,0 +1,19 @@
+{
+  "name": "curtailiq-infra",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "cdk": "cdk"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.x",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "aws-cdk": "2.x",
+    "ts-node": "^10.9.0",
+    "typescript": "~5.5.0",
+    "@types/node": "^22"
+  }
+}

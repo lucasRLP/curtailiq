@@ -1,0 +1,10 @@
+{
+  "is_simulated": true,
+  "scenario_id": "12269a00a60a66be",
+  "method": "synthetic-retrospective-coordinate-v2",
+  "files": {
+    "scenario.json": "01ea9ba8a8b7996814d21231e89f3afa7738441f7545fc79fb70a64d54263c1e",
+    "scada.csv": "f0a2afe1b0c9015499ab0149b874536892cd8535087b5a4be8191dd47510be9f",
+    "report.md": "508e35b0500bfe4f07e56a378d482b8e47e1acdbf6e34ef3111a6f2b49e02a59"
+  }
+}

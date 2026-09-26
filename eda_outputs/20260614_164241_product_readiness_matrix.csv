@@ -1,0 +1,8 @@
+﻿funcionalidade,dados_necessarios,sinais_no_banco,status_inferido,risco_principal
+Identificar eventos de restrição/curtailment,"usina, tempo, evento/restrição, energia restringida ou geração esperada/verificada",restr/curtail/corte/constrained/geração,suportado/parcial,confundir perda estimada com restrição real se faltar razão/origem
+Classificar razão e elegibilidade regulatória,"cod_razao_restricao, motivo, origem, regra regulatória versionada",razao/motivo/causa/origem/cnf/ene/rel,suportado/parcial,percentual ressarcível vira frágil se razão estiver nula/indefinida
+Calcular perda financeira,MWh restringido + PLD/preço + submercado + timestamp compatível,pld/preço/valor/perda/submercado/mwh,suportado/parcial,PLD sem cobertura temporal/submercado gera perda zerada ou incorreta
+Ranking e seleção de usinas,"cadastro de usina, fonte, submercado, capacidade, coordenadas opcionais",usina/ativo/empreendimento/fonte/submercado/capacidade,suportado/parcial,nomes/códigos inconsistentes impedem joins e mapa confiável
+Forecast de perda/corte,"histórico temporal suficiente, granularidade regular, features sazonais/recurso",séries temporais de geração/restrição/perda,suportado como MVP,sem recurso meteorológico/SCADA o forecast deve ser tratado como MVP/fallback
+Simulador BESS,série horária de energia perdida/recuperável e valor financeiro,energia restringida/perda por hora,suportado como simulação,"sem granularidade horária, dimensionamento técnico fica aproximado"
+Dossiê/pleito regulatório,"eventos, razão, memória de cálculo, evidências e revisão humana",restrição + razão + perda financeira,parcial/depende de evidências,"sem trilha documental/SCADA/documentos oficiais, não vender como prova auditada completa"

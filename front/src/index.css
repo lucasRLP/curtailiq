@@ -1,0 +1,456 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/noto-sans";
+@import "@fontsource-variable/raleway";
+/* Antes dos overrides do fim do arquivo: em dev o Vite injeta o CSS importado
+   pelo componente DEPOIS do global, e o leaflet.css venceria as nossas regras. */
+@import "leaflet/dist/leaflet.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================================
+   CurtailIQ — sistema de design
+   Marca: azul-petróleo profundo (ink) + teal (ação).
+   Cores de série validadas com o validador de paleta (CVD + contraste) contra
+   as superfícies reais deste app, nos dois temas. Não trocar hex sem revalidar.
+   ========================================================================= */
+
+:root {
+    /* superfícies — tema claro */
+    --background: #f6f8f9;
+    --card: #ffffff;
+    --card-foreground: #0d141c;
+    --popover: #ffffff;
+    --popover-foreground: #0d141c;
+    --foreground: #0d141c;
+
+    /* ação — teal da marca */
+    --primary: #12806a;
+    --primary-foreground: #ffffff;
+
+    --secondary: #e9eef2;
+    --secondary-foreground: #1d2b3a;
+
+    /* accent = estado de hover/realce de superfície (NÃO é a cor da marca) */
+    --accent: #e9eef2;
+    --accent-foreground: #0d141c;
+
+    --muted: #eef2f5;
+    --muted-foreground: #5a6b7c;
+
+    --destructive: #d03b3b;
+    --border: #dde4ea;
+    --input: #d3dce4;
+    --ring: #12806a;
+
+    --radius: 0.625rem;
+
+    /* ---- domínio: o que cada cor significa no produto -------------------- */
+    --loss: #d03b3b;              /* perda financeira realizada */
+    --recoverable: #12806a;       /* potencial ressarcível */
+    --forecast: #4a3aa7;          /* projeção / previsão */
+    --historic: #2a78d6;          /* dado histórico medido */
+    --energy: #2a78d6;            /* energia restringida (MWh) */
+    --solar: #eda100;
+    --wind: #2a78d6;
+
+    /* ---- status (reservado; nunca vira "série 4") ------------------------ */
+    --status-good: #0ca30c;
+    --status-warning: #b07800;
+    --status-serious: #c25a2c;
+    --status-critical: #d03b3b;
+
+    /* ---- séries categóricas (ordem fixa, nunca reciclada) ---------------- */
+    --chart-1: #2a78d6;
+    --chart-2: #eb6834;
+    --chart-3: #1baf7a;
+    --chart-4: #eda100;
+    --chart-5: #e87ba4;
+    --chart-6: #4a3aa7;
+
+    /* ---- cromo do gráfico ------------------------------------------------ */
+    --grid: #e6ebef;
+    --axis: #aab8c4;
+    --surface-glow: 0 0% 0%;
+
+    --sidebar: #ffffff;
+    --sidebar-foreground: #0d141c;
+    --sidebar-primary: #12806a;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #eef2f5;
+    --sidebar-accent-foreground: #0d141c;
+    --sidebar-border: #dde4ea;
+    --sidebar-ring: #12806a;
+}
+
+.dark {
+    /* superfícies — tema escuro (padrão do produto) */
+    --background: #0b1119;
+    --card: #131c27;
+    --card-foreground: #e8eef4;
+    --popover: #16202c;
+    --popover-foreground: #e8eef4;
+    --foreground: #e8eef4;
+
+    --primary: #2bb894;
+    --primary-foreground: #04231c;
+
+    --secondary: #1b2633;
+    --secondary-foreground: #e8eef4;
+
+    --accent: #1e2a38;
+    --accent-foreground: #e8eef4;
+
+    --muted: #1a2431;
+    --muted-foreground: #90a1b3;
+
+    --destructive: #e66767;
+    --border: oklch(1 0 0 / 9%);
+    --input: oklch(1 0 0 / 14%);
+    --ring: #2bb894;
+
+    --loss: #e66767;
+    --recoverable: #2bb894;
+    --forecast: #9085e9;
+    --historic: #3987e5;
+    --energy: #3987e5;
+    --solar: #c98500;
+    --wind: #3987e5;
+
+    --status-good: #0ca30c;
+    --status-warning: #fab219;
+    --status-serious: #ec835a;
+    --status-critical: #e66767;
+
+    --chart-1: #3987e5;
+    --chart-2: #d95926;
+    --chart-3: #199e70;
+    --chart-4: #c98500;
+    --chart-5: #d55181;
+    --chart-6: #9085e9;
+
+    --grid: oklch(1 0 0 / 7%);
+    --axis: oklch(1 0 0 / 22%);
+    --surface-glow: 0 0% 100%;
+
+    --sidebar: #101823;
+    --sidebar-foreground: #e8eef4;
+    --sidebar-primary: #2bb894;
+    --sidebar-primary-foreground: #04231c;
+    --sidebar-accent: #1b2633;
+    --sidebar-accent-foreground: #e8eef4;
+    --sidebar-border: oklch(1 0 0 / 9%);
+    --sidebar-ring: #2bb894;
+}
+
+@theme inline {
+    --font-sans: 'Noto Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-heading: 'Raleway Variable', system-ui, sans-serif;
+    --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-loss: var(--loss);
+    --color-recoverable: var(--recoverable);
+    --color-forecast: var(--forecast);
+    --color-historic: var(--historic);
+    --color-energy: var(--energy);
+    --color-solar: var(--solar);
+    --color-wind: var(--wind);
+
+    --color-good: var(--status-good);
+    --color-warning: var(--status-warning);
+    --color-serious: var(--status-serious);
+    --color-critical: var(--status-critical);
+
+    --color-grid: var(--grid);
+    --color-axis: var(--axis);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-chart-6: var(--chart-6);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --radius-sm: calc(var(--radius) * 0.5);
+    --radius-md: calc(var(--radius) * 0.75);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.9);
+    --radius-3xl: calc(var(--radius) * 2.4);
+    --radius-4xl: calc(var(--radius) * 3);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    html {
+        @apply font-sans;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
+
+    /* Foco visível e consistente em tudo que é interativo. */
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-ring;
+    }
+
+    /* Números em tabelas e eixos alinham verticalmente. */
+    th,
+    td,
+    .tabular {
+        font-variant-numeric: tabular-nums;
+    }
+
+    ::selection {
+        background-color: color-mix(in oklab, var(--primary) 30%, transparent);
+    }
+}
+
+@layer components {
+    /* Superfície padrão de painel: usada por todos os cartões de conteúdo. */
+    .panel {
+        @apply rounded-xl border border-border bg-card;
+    }
+
+    /* Cabeçalho de seção dentro de um painel. */
+    .panel-title {
+        @apply text-[0.8125rem] font-semibold tracking-tight text-foreground;
+    }
+
+    .eyebrow {
+        @apply text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground;
+    }
+
+    /* ------------------------------------------------------------------------
+       Markdown renderizado (resposta da IA, minuta do pleito).
+
+       O projeto não usa @tailwindcss/typography, então as classes `prose` que
+       estavam espalhadas pelo código não produziam estilo nenhum: o dossiê saía
+       como texto corrido sem hierarquia. Estes estilos cobrem o que os
+       documentos gerados realmente usam.
+       --------------------------------------------------------------------- */
+    .markdown {
+        @apply text-sm leading-relaxed text-foreground;
+    }
+
+    .markdown > * + * {
+        @apply mt-3;
+    }
+
+    .markdown h1 {
+        @apply font-heading text-lg font-bold tracking-tight;
+    }
+
+    .markdown h2 {
+        @apply mt-5 font-heading text-base font-semibold tracking-tight;
+    }
+
+    .markdown h3 {
+        @apply mt-4 text-sm font-semibold;
+    }
+
+    .markdown p {
+        @apply text-sm leading-relaxed;
+    }
+
+    .markdown ul {
+        @apply list-disc space-y-1 pl-5;
+    }
+
+    .markdown ol {
+        @apply list-decimal space-y-1 pl-5;
+    }
+
+    .markdown li {
+        @apply text-sm leading-relaxed;
+    }
+
+    .markdown li > p {
+        @apply my-0;
+    }
+
+    .markdown strong {
+        @apply font-semibold text-foreground;
+    }
+
+    .markdown a {
+        @apply text-primary underline underline-offset-2;
+    }
+
+    .markdown blockquote {
+        @apply border-l-2 border-border pl-3 text-muted-foreground;
+    }
+
+    .markdown code {
+        @apply rounded bg-muted px-1 py-0.5 font-mono text-[0.8125em];
+    }
+
+    .markdown pre {
+        @apply overflow-x-auto rounded-md border border-border bg-muted p-3;
+    }
+
+    .markdown pre code {
+        @apply bg-transparent p-0;
+    }
+
+    .markdown hr {
+        @apply border-border;
+    }
+
+    .markdown table {
+        @apply w-full border-collapse text-xs;
+    }
+
+    .markdown th,
+    .markdown td {
+        @apply border border-border px-2 py-1.5 text-left;
+    }
+
+    .markdown th {
+        @apply bg-muted font-semibold;
+    }
+}
+
+@layer components {
+    /* ------------------------------------------------------------------------
+       Entrada de conteúdo ao trocar de rota.
+
+       A animação termina em `transform: none` de propósito: um transform
+       permanente no ancestral cria um bloco de contenção e quebraria o
+       `position: sticky` dos elementos internos (o campo do chat, o cabeçalho
+       das tabelas longas).
+
+       O bloco de `prefers-reduced-motion` no fim do arquivo zera isto para quem
+       pediu menos movimento.
+       --------------------------------------------------------------------- */
+    @keyframes entrada-conteudo {
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    .entrada-conteudo {
+        animation: entrada-conteudo 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+}
+
+@layer utilities {
+    /* Trilha de rolagem discreta (navegação por abas, listas densas). */
+    .scrollbar-none {
+        scrollbar-width: none;
+    }
+
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+
+    .bleed-grid {
+        background-image:
+            linear-gradient(to right, var(--grid) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+        background-size: 48px 48px;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Leaflet herda o tema do app: sem isso o popup nasce branco e os controles
+   ficam com o cinza padrão da biblioteca no meio de uma interface escura.
+   ------------------------------------------------------------------------ */
+.leaflet-container {
+    background: var(--muted);
+    font-family: inherit;
+}
+
+.leaflet-control-attribution {
+    background: color-mix(in oklab, var(--card) 80%, transparent) !important;
+    color: var(--muted-foreground) !important;
+    font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+    color: var(--muted-foreground) !important;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+    background: var(--card);
+    color: var(--foreground);
+    border-color: var(--border);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    background: var(--popover);
+    color: var(--popover-foreground);
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.5);
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: var(--radius);
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    width: auto !important;
+}
+
+.leaflet-popup-close-button {
+    color: var(--muted-foreground) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS/Editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Local caches
+backend/**/__pycache__/
+
+# ML artifacts/datasets locais
+backend/data/training_*/
+backend/data/local_demo/
+
+# CDK/infra build artifacts
+infra/lambda-bundle/
+infra/cdk.out/
+infra/node_modules/
+
+# Arquivos grandes (banco mock, ML data, caches)
+backend/banco_mock/curtail_dw.dump
+backend/banco_mock/curtail_dw.sql.gz
+backend/models_ml/curtailment_model_v0_real.pkl
+backend/models_ml/data_ml/temp_cache/

@@ -1,0 +1,107 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+
+env:
+  BACKEND_IMAGE: ghcr.io/ufrj-analytica/energython-backend
+  FRONTEND_IMAGE: ghcr.io/ufrj-analytica/energython-frontend
+
+jobs:
+  build-and-push:
+    name: Build & push images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:latest
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build & push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./front
+          push: true
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:latest
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to VPS
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Encode docker-compose
+        run: echo "COMPOSE_B64=$(base64 -w 0 docker-compose.yml)" >> $GITHUB_ENV
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 5m
+          command_timeout: 20m
+          envs: DATABASE_URL,ANTHROPIC_API_KEY,CORS_ORIGINS,MVP_ONLY_NORDESTE,GHCR_TOKEN,GHCR_USER,COMPOSE_B64
+          script: |
+            mkdir -p ~/energython/backend
+
+            printf '%s\n' \
+              "DATABASE_URL=$DATABASE_URL" \
+              "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY" \
+              "CORS_ORIGINS=$CORS_ORIGINS" \
+              "MVP_ONLY_NORDESTE=$MVP_ONLY_NORDESTE" \
+              "DATA_BACKEND=postgres" \
+              "CACHE_ENABLED=true" \
+              "CACHE_MAX_ENTRIES=1024" \
+              "CACHE_USINAS_TTL_SECONDS=1800" \
+              "CACHE_FINANCEIRO_TTL_SECONDS=1800" \
+              "CACHE_REGULATORIO_TTL_SECONDS=1800" \
+              "CACHE_BESS_TTL_SECONDS=900" \
+              "CACHE_PLEITO_TTL_SECONDS=86400" \
+              "API_HTTP_CACHE_SECONDS=60" \
+              "API_HTTP_STALE_WHILE_REVALIDATE_SECONDS=300" \
+              > ~/energython/backend/.env
+
+            echo "$COMPOSE_B64" | base64 -d > ~/energython/docker-compose.yml
+
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            cd ~/energython
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
+          MVP_ONLY_NORDESTE: ${{ secrets.MVP_ONLY_NORDESTE }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          COMPOSE_B64: ${{ env.COMPOSE_B64 }}

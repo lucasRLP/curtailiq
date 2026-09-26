@@ -1,0 +1,43 @@
+﻿table_schema,table_name,column_name,data_type,min_value,max_value,total_rows,non_null_rows,distinct_values,coverage_non_null_%
+public,ccee_ccgf_cont_sazonalizado,data_atualizacao,bigint,20231121,20260506,372,372,31,100.0
+public,ccee_consumo_horario_submercado,periodo_comercializacao,bigint,1,744,25584,25584,744,100.0
+public,ccee_contrato_montante_submercado_horario,periodo_comercializacao,bigint,1,744,25584,25584,744,100.0
+public,ccee_encargo_horario_submercado,periodo_comercializacao,text,1,99,24840,24840,744,100.0
+public,ccee_energia_distrib_horario_submercado,periodo_comercializacao,bigint,1,744,74520,74520,744,100.0
+public,ccee_energia_incentivada_gf_fonte,garantia_fisica_cq_dt_50,text,0.004784598214,9.951444389785,129,28,28,21.71
+public,ccee_energia_incentivada_gf_fonte,garantia_fisica_ie_dt_100,text,106.442166035714,9.31603394086,129,56,43,43.41
+public,ccee_energia_incentivada_gf_fonte,garantia_fisica_ie_dt_50,text,0.002636949405,952.662930771505,129,113,112,87.6
+public,ccee_energia_incentivada_gf_fonte,garantia_fisica_ie_dt_80,text,1.463893030556,2.552854134409,129,22,22,17.05
+public,ccee_energia_incentivada_gf_fonte,garantia_fisica_ine_dt,text,0.000135483871,444.300380194892,129,57,57,44.19
+public,ccee_energia_incentivada_mensal,garantia_fisica_dt_100,text,328.825425384409,421.130147731183,23,22,22,95.65
+public,ccee_energia_incentivada_mensal,garantia_fisica_dt_50,text,11010.975646977151,15878.619716327777,23,22,22,95.65
+public,ccee_energia_incentivada_mensal,garantia_fisica_dt_80,text,0.0,2.441577344086,23,22,20,95.65
+public,ccee_garantia_fisica_sazo_lastro,data_atualizacao,bigint,20240104,20260506,348,348,29,100.0
+public,ccee_garantia_fisica_sazo_submercado,data_atualizacao,bigint,20240104,20260526,264,264,22,100.0
+public,ccee_geracao_horaria,periodo_comercializacao,bigint,1,744,22632,22632,744,100.0
+public,ccee_geracao_horaria_fonte_submercado,periodo_comercializacao,bigint,1,744,25584,25584,744,100.0
+public,ccee_geracao_horaria_submercado,periodo_comercializacao,bigint,1,744,21168,21168,744,100.0
+public,ccee_mcsd_energia_existente_apuracao_liquidacao_p3,hora_mes,bigint,672,744,236,236,3,100.0
+public,ccee_mcsd_energia_nova_apuracao_liquidacao,hora_mes,text,,,0,0,0,0.0
+public,ccee_penalidade_consumo_horario,periodo_comercializacao,bigint,1,744,24120,24120,744,100.0
+public,ccee_pld_final_historico,periodo_final,date,2013-04-05,2013-08-30,66,66,22,100.0
+public,ccee_pld_final_historico,periodo_inicial,date,2013-03-30,2013-08-24,66,66,22,100.0
+public,ccee_pld_horario,hora,text,0,9,50502,50502,34,100.0
+public,ccee_pld_horario,periodo_comercializacao,text,1,99,50502,50502,744,100.0
+public,ccee_pld_horario,pld_hora,text,100.03,99.99,50502,50502,16013,100.0
+public,ccee_pld_horario_submercado,periodo_comercializacao,bigint,1,744,25584,25584,744,100.0
+public,ccee_pld_sombra,hora,bigint,0,23,21048,21048,24,100.0
+public,ccee_pld_sombra,periodo_comercializacao,bigint,1,744,21048,21048,744,100.0
+public,ccee_rd_encargos_contab_horario,data,date,2024-01-01,2026-04-30,17472,17472,728,100.0
+public,ccee_rd_encargos_contab_horario,periodo_comercializacao,bigint,1,744,17472,17472,744,100.0
+public,ccee_rd_encargos_previa_horario,data,date,2024-01-01,2026-04-30,17472,17472,728,100.0
+public,ccee_rd_encargos_previa_horario,periodo_comercializacao,bigint,1,744,17472,17472,744,100.0
+public,ccee_rrh_geracao_horaria,periodo_comercializacao,text,1,99,22632,22632,744,100.0
+public,ccee_sumario_be_horario_submercado,periodo_comercializacao,bigint,1,744,25584,25584,744,100.0
+public,disponibilidade_usina,din_instante,timestamp without time zone,2019-01-01 00:00:00,2026-05-28 23:00:00,3376941,3376941,64920,100.0
+public,fator_capacidade_2,din_instante,timestamp without time zone,2014-06-18 00:00:00,2026-05-28 23:00:00,13779859,13779859,104659,100.0
+public,geracao_usina_2,din_instante,timestamp without time zone,2003-01-01 00:00:00,2026-05-28 23:00:00,15394117,15394117,162191,100.0
+public,restricao_coff_eolica_detail,din_instante,timestamp without time zone,2021-10-01 00:00:00,2026-05-29 23:30:00,68914613,68914613,81696,100.0
+public,restricao_coff_eolica_usi,din_instante,text,2021-10-01 00:00:00,2023-02-28 23:30:00,319680,319680,24768,100.0
+public,restricao_coff_fotovoltaica,din_instante,timestamp with time zone,2024-04-01 00:00:00+00,2026-05-29 23:30:00+00,1675248,1675248,37872,100.0
+public,restricao_coff_fotovoltaica_detail,din_instante,timestamp with time zone,2024-04-01 00:00:00+00,2026-05-29 23:30:00+00,9362688,9362688,37872,100.0
