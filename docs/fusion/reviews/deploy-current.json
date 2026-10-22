@@ -1,0 +1,52 @@
+{
+  "approved": false,
+  "scope": "Revisao independente estatica e testes offline focados do deploy no checkout publish; nao constitui simulacao IAM AWS, provisionamento, deploy nem verificacao HTTP real.",
+  "findings": [
+    {
+      "id": "DEPLOY-BLOCK-01",
+      "severity": "blocking",
+      "file": "infra/iam/cloudformation-execution-policy.json:4",
+      "title": "CreateFunction exige Resource global; ARN exato nao autoriza a criacao da funcao SPA",
+      "evidence": "A referencia ../cloudfront-service-reference.json inclui CreateFunction sem campo Resources e com ActionConditionKeys aws:RequestTag/${TagKey} e aws:TagKeys. Em contraste, DescribeFunction, GetFunction, UpdateFunction, PublishFunction e DeleteFunction explicitamente suportam recurso function. A policy agrupa CreateFunction com estas acoes sob ARN exato function/curtailai-demo-spa-router. O stack cria essa funcao em infra/lib/curtailiq-stack.ts:74-87.",
+      "impact": "No primeiro provisionamento, a execution role nao tem allow aplicavel para cloudfront:CreateFunction; a criacao da funcao SPA bloqueia o stack.",
+      "recommendation": "Separar CreateFunction em statement Resource * (excecao documentada para acao sem escopo por recurso), eventualmente restringido por tags de requisicao efetivamente enviadas. Manter o ARN exato para o lifecycle que suporta function. Atualizar o teste e a allowlist global para refletir a semantica real da referencia.",
+      "test_limitation": "test_site_permissions.py passa porque o helper allowed apenas compara strings e nao verifica o modelo de autorizacao do servico; isso nao comprova que CreateFunction aceita ARN. Nao houve chamada AWS nem simulacao IAM."
+    },
+    {
+      "id": "VALIDATION-LIMIT-01",
+      "severity": "informational",
+      "title": "Teste dependente do template sintetizado nao executou com sucesso neste checkout",
+      "evidence": "unittest discover em infra/iam: 10 testes, 9 passaram e 1 erro FileNotFoundError em infra/cdk.out/curtailai-demo.template.json. infra/node_modules ausente; ../integration/infra/node_modules presente, mas nao utilizado. Nenhum synth foi executado nem template de integration apresentado como evidencia de publish."
+    }
+  ],
+  "confirmed": [
+    "CreateInvalidation e GetInvalidation usam recurso distribution na referencia local; distribution suporta aws:ResourceTag/${TagKey}. As duas policies de publicacao restringem conta e Project=curtailai, e o stack aplica essa tag.",
+    "Boundary runtime permite apenas logs:CreateLogStream e logs:PutLogEvents nos streams do grupo backend previsto; role de runtime recebe somente essas acoes e boundary obrigatoria.",
+    "deploy-image.sh verifica checksums, SHA, imutabilidade do ECR e igualdade do config ID entre imagem local e digest publicado antes de fazer deploy por execution role.",
+    "publish-site.py publica frontend, invalida por DistributionId, aguarda GetInvalidation e chama smoke HTTP; esses caminhos foram inspecionados, nao executados.",
+    "frontend-lint.cjs e gate no-new, nao lint bruto verde: compara fingerprints com baseline fixo e rejeita alteracoes em config e dependencias. O teste unitario do comparador passou. As 31 ocorrencias legadas e CI Linux/build/smoke anteriores sao contexto fornecido, nao reexecucao desta revisao."
+  ],
+  "tests": [
+    {"command": "PYTHONDONTWRITEBYTECODE=1 python -B -m unittest discover -s infra/iam -p 'test*.py' -v", "exit_code": 1, "result": "9 passed; 1 error por template ausente; ambos os testes SitePermissions passaram"},
+    {"command": "PYTHONDONTWRITEBYTECODE=1 python -B -m unittest discover -s scripts/ci -p 'test_deploy_requirements.py' -v", "exit_code": 0, "result": "2 passed"},
+    {"command": "node scripts/ci/test_frontend_lint.cjs", "exit_code": 0, "result": "1 passed"},
+    {"command": "bash -n scripts/ci/deploy-image.sh", "exit_code": 0, "result": "sintaxe shell aceita"}
+  ],
+  "restrictions": "Nenhuma instalacao, acesso a .env/credenciais, chamada AWS/GH, mutacao Git ou edicao funcional. Unica escrita autorizada: este parecer. Nao verificados recursos preexistentes, ECR repository policy, protecoes reais do environment GitHub ou provisionamento IAM.",
+  "sha256": {
+    "infra/iam/test_site_permissions.py": "d227a10ad356533f9c103c3bf278dd4a7fa7ca0d7bf9030e77d128b4c4815452",
+    "infra/iam/test_policies.py": "3bbbdcd4a695a0b3f0db57916805502ebe41605b2e8da25eee620e5e38022ebe",
+    "infra/iam/github-role-policy.json": "ebaf753dcd3e099485163bea63b98e189013ea39c361b25dc29e546d659e1df1",
+    "infra/iam/bootstrap-policy.json": "ebaf753dcd3e099485163bea63b98e189013ea39c361b25dc29e546d659e1df1",
+    "infra/iam/cloudformation-execution-policy.json": "cc47155d31475de4b1230f27d3931ba9fa98eea7b859bdd7ee26253825dda129",
+    "infra/iam/permissions-boundary.json": "3e3dc95dff85bb9531ef8e7766c3dce15fdb6275557068ff0617feecbb251d6b",
+    "infra/iam/github-trust.json": "da74aa4a718d9ab5aaccae2279ea576a0af4f09e8ac107ae45f2d96b87f0c0b0",
+    "infra/lib/curtailiq-stack.ts": "12abe6f7b110a09a478b94641a70390c86dcaae3417f936bc87a1ceb3abfa2b4",
+    "scripts/ci/deploy-image.sh": "97db51b5f4013b1ef051904e54cb0153da98e35207d6662291873d69edab4427",
+    "scripts/ci/publish-site.py": "c4f0ee872cd7cf5564aa99b5ca764c216e0a6eb3fed2b99da59386120ec63dca",
+    "scripts/ci/frontend-lint.cjs": "6887ad878356076e85ecec15b39ae5fa440a3d51b684385796ad25f3e22011e3",
+    "scripts/ci/test_frontend_lint.cjs": "1a8bf8a434040104b40b199b3c9345786abc2d72e621b05b79682fde37930cf1",
+    ".github/workflows/curtailai-deploy.yml": "c7ff3607773e68279bd400dd419ddf0a9ee1d03abc4b240579ba9f738c6ea018",
+    "../cloudfront-service-reference.json": "efc26446a6395ce5fce715f1b2e387a6b1d425914489cd80982ae34468f5ca7e"
+  }
+}

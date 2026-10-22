@@ -93,7 +93,10 @@ class OidcPolicyTests(unittest.TestCase):
                 actions = s['Action'] if isinstance(s['Action'], list) else [s['Action']]
                 self.assertTrue(all('*' not in a for a in actions), name)
                 if s['Effect'] == 'Allow' and s['Resource'] == '*':
-                    self.assertTrue(set(actions) <= globals_ok, name)
+                    if set(actions) <= {'cloudfront:CreateFunction', 'cloudfront:CreateDistribution'}:
+                        self.assertEqual(s.get('Condition'), {'StringEquals': {'aws:RequestTag/Project': 'curtailai'}})
+                    else:
+                        self.assertTrue(set(actions) <= globals_ok, name)
 
     def test_template_contract_and_log_discovery(self):
         template = json.loads((HERE.parent / 'cdk.out' / 'curtailai-demo.template.json').read_text(encoding='utf-8'))

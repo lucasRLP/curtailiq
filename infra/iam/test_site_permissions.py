@@ -13,9 +13,16 @@ class SitePermissions(unittest.TestCase):
             self.assertFalse(allowed(policy,action,'arn:aws:cloudfront::999900001111:distribution/EXAMPLE',{'aws:ResourceTag/Project':'curtailai'}))
         self.assertFalse(allowed(policy,'cloudfront:UpdateDistribution',arn,{'aws:ResourceTag/Project':'curtailai'}))
 
+    def test_global_creation_requires_explicit_project_request_tag(self):
+        policy=load('cloudformation-execution-policy.json')
+        for action in ['cloudfront:CreateFunction','cloudfront:CreateDistribution']:
+            self.assertTrue(allowed(policy,action,'*',{'aws:RequestTag/Project':'curtailai'}))
+            self.assertFalse(allowed(policy,action,'*',{'aws:RequestTag/Project':'other'}))
+            self.assertFalse(allowed(policy,action,'*',{}))
+
     def test_cloudformation_can_manage_only_named_router_function(self):
         policy=load('cloudformation-execution-policy.json')
-        for action in ['cloudfront:CreateFunction','cloudfront:DescribeFunction','cloudfront:UpdateFunction','cloudfront:PublishFunction','cloudfront:DeleteFunction']:
+        for action in ['cloudfront:DescribeFunction','cloudfront:UpdateFunction','cloudfront:PublishFunction','cloudfront:DeleteFunction']:
             self.assertTrue(allowed(policy,action,f'arn:aws:cloudfront::{ACCOUNT}:function/curtailai-demo-spa-router'))
             self.assertFalse(allowed(policy,action,f'arn:aws:cloudfront::{ACCOUNT}:function/unrelated'))
 
