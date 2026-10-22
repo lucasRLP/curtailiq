@@ -14,6 +14,7 @@ function gitHash() {
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/curtailai/",
   plugins: [react(), tailwindcss()],
   define: {
     __FRONT_BUILD_TIME__: JSON.stringify(new Date().toISOString()),

@@ -68,4 +68,4 @@ export const router = createBrowserRouter([
     ],
   },
   { path: "*", element: lazyPage(<NotFound />) },
-])
+], { basename: "/curtailai/" })
