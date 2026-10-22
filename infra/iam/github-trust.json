@@ -7,7 +7,7 @@
     "Action": "sts:AssumeRoleWithWebIdentity",
     "Condition": {"StringEquals": {
       "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-      "token.actions.githubusercontent.com:sub": "repo:lucasRLP/curtailiq:environment:curtailai-demo"
+      "token.actions.githubusercontent.com:sub": "repo:lucasRLP@170772538/curtailiq@1389062638:environment:curtailai-demo"
     }}
   }]
 }

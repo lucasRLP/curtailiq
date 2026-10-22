@@ -4,7 +4,7 @@ import { CircleMarker, MapContainer, Popup, TileLayer, useMap, useMapEvents } fr
 import type { LatLngBoundsExpression, Map as LeafletMap } from "leaflet"
 import { Maximize2, MousePointerClick, Sun, Wind } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useResolvedTheme } from "@/hooks/useResolvedTheme"
+
 import { fmtBRL, fmtMW, fmtMWh, fmtMWhCompacto } from "@/lib/formatters"
 import { cn } from "@/lib/utils"
 import type { UsinaOut } from "@/types/usinas"
@@ -16,8 +16,7 @@ import type { UsinaOut } from "@/types/usinas"
    desenhar a malha do IBGE em SVG deixava tudo estático — o enquadramento era
    calculado e não havia como chegar perto de um ativo.
 
-   O que se manteve daquela versão: basemap que acompanha o tema (um mapa branco
-   no meio de uma interface escura vira um clarão), marcador com a energia
+   Base clara em ambos os temas para preservar a leitura geográfica, marcador com a energia
    cortada codificada no tamanho, e sincronia com a lista ao lado.
    ========================================================================= */
 
@@ -35,18 +34,10 @@ type PontoUsina = UsinaOut & { latitude: number; longitude: number }
  * Nota: a Esri ordena o caminho como {z}/{y}/{x}, ao contrário do OSM.
  */
 const TILES = {
-  dark: {
-    url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-    solar: "#c98500",
-    eolica: "#3987e5",
-    anel: "#0b1119",
-  },
-  light: {
     url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
     solar: "#eda100",
     eolica: "#2a78d6",
     anel: "#ffffff",
-  },
 } as const
 
 const ATRIBUICAO = 'Tiles &copy; <a href="https://www.esri.com/">Esri</a>'
@@ -99,8 +90,7 @@ interface Props {
 
 export function MapaUsinas({ usinas, destacada, onHover, height = 460, className }: Props) {
   const navigate = useNavigate()
-  const tema = useResolvedTheme()
-  const estilo = TILES[tema]
+  const estilo = TILES
 
   const [mapa, setMapa] = useState<LeafletMap | null>(null)
   const [rodaAtiva, setRodaAtiva] = useState(false)
@@ -148,10 +138,10 @@ export function MapaUsinas({ usinas, destacada, onHover, height = 460, className
         minZoom={3}
         maxZoom={14}
         scrollWheelZoom={false}
-        style={{ height }}
+        style={{ height, background: "#eef1f3" }}
         className="w-full"
       >
-        <TileLayer key={tema} attribution={ATRIBUICAO} url={estilo.url} />
+        <TileLayer attribution={ATRIBUICAO} url={estilo.url} />
         <CapturarMapa onPronto={setMapa} />
         <ZoomPorRoda ativo={rodaAtiva} onAtivar={() => setRodaAtiva(true)} onDesativar={() => setRodaAtiva(false)} />
 
@@ -174,6 +164,7 @@ export function MapaUsinas({ usinas, destacada, onHover, height = 460, className
                 pathOptions={{
                   color: ativo ? cor : estilo.anel,
                   weight: ativo ? 3 : 1.5,
+                  dashArray: usina.fonte === "solar" ? "3 2" : undefined,
                   fillColor: cor,
                   fillOpacity: ativo ? 1 : 0.78,
                 }}
@@ -251,7 +242,7 @@ export function MapaUsinas({ usinas, destacada, onHover, height = 460, className
       </Button>
 
       {!rodaAtiva && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-3 z-[400] flex justify-center">
+        <div className="pointer-events-none absolute inset-x-0 top-14 z-[400] flex justify-center">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/90 px-2.5 py-1 text-[0.6875rem] text-muted-foreground backdrop-blur">
             <MousePointerClick className="h-3 w-3" />
             Clique no mapa para aproximar com a roda
@@ -262,10 +253,10 @@ export function MapaUsinas({ usinas, destacada, onHover, height = 460, className
       <div className="pointer-events-none absolute bottom-3 left-3 z-[400] rounded-lg border border-border bg-card/90 px-3 py-2 backdrop-blur">
         <ul className="space-y-1">
           <li className="flex items-center gap-1.5 text-[0.6875rem] text-muted-foreground">
-            <Wind className="h-3 w-3 text-wind" /> Eólica
+            <span aria-hidden className="h-3 w-3 rounded-full border border-white" style={{ backgroundColor: estilo.eolica }} /> Eólica · contorno contínuo
           </li>
           <li className="flex items-center gap-1.5 text-[0.6875rem] text-muted-foreground">
-            <Sun className="h-3 w-3 text-solar" /> Solar
+            <span aria-hidden className="h-3 w-3 rounded-full border border-dashed border-white" style={{ backgroundColor: estilo.solar }} /> Solar · contorno tracejado
           </li>
         </ul>
         <div className="mt-2 flex items-center gap-1.5 border-t border-border pt-2">

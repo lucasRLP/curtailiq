@@ -19,6 +19,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <aside aria-label="Aviso de demonstração" className="relative z-[1100] border-b border-amber-300/30 bg-[#17212d] px-4 py-2 text-center text-xs leading-5 text-amber-100">
+          Demonstração · snapshot histórico local · cenários estimados; não é apuração oficial
+        </aside>
         <RouterProvider router={router} />
         <Toaster />
       </TooltipProvider>

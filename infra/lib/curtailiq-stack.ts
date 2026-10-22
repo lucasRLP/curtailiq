@@ -46,7 +46,11 @@ export class CurtailIQStack extends cdk.Stack {
       role: runtimeRole,
       timeout: cdk.Duration.seconds(60), memorySize: 1024,
       environment: {
-        DATA_BACKEND: 'mock', CORS_ORIGINS: '*', BEDROCK_ENABLED: 'false', MVP_ONLY_NORDESTE: 'true',
+        DATA_BACKEND: 'mock', MOCK_DATA_DIR: 'data/local_demo', CORS_ORIGINS: '*', BEDROCK_ENABLED: 'false', MVP_ONLY_NORDESTE: 'true',
+        CACHE_ENABLED: 'true', CACHE_MAX_ENTRIES: '256',
+        CACHE_USINAS_TTL_SECONDS: '1800', CACHE_FINANCEIRO_TTL_SECONDS: '1800',
+        CACHE_REGULATORIO_TTL_SECONDS: '1800', CACHE_BESS_TTL_SECONDS: '900',
+        API_HTTP_CACHE_SECONDS: '60', API_HTTP_STALE_WHILE_REVALIDATE_SECONDS: '300',
         // Settings rejects 'demo'; absent pickle paths force the existing demo heuristic.
         CURTAILMENT_MODEL_MODE: 'base',
         CURTAILMENT_MODEL_PATH: '/opt/curtailai-demo-disabled/base.pkl',

@@ -1,0 +1,11 @@
+usina_id,nome,fonte,potencia_mw,submercado,latitude,longitude,id_ons,ceg,garantia_fisica_mwm,total_corte_mwh,total_ressarcivel_mwh,percentual_ressarcivel,fonte_rank,data_inicio,data_fim,nivel_granularidade
+1,Praia Formosa,eolica,105.0,NE,-2.90509733,-41.03924765,,EOL.CV.CE.028631-1,57.75,29726.173,5841.935,19.65,1,2026-01-01T00:00:00,2026-07-08T15:00:00,mock_dw_fato_restricao_coff_horario
+7,Rei dos Ventos 1,eolica,58.45,NE,-5.10086936,-36.20204622,,EOL.CV.RN.030416-6,32.148,33869.865,4835.358,14.28,2,2026-01-01T00:00:00,2026-07-08T23:30:00,mock_dw_fato_restricao_coff_horario
+4,Alegria II,eolica,100.65,NE,-5.12430556,-36.38330556,,EOL.CV.RN.028443-2,55.358,33023.308,4251.088,12.87,3,2026-01-01T00:00:00,2026-07-08T21:30:00,mock_dw_fato_restricao_coff_horario
+6,Miassaba 3,eolica,68.47,NE,-5.12783831,-36.45364833,,EOL.CV.RN.030339-9,37.659,30063.15,4334.783,14.42,4,2026-01-01T00:30:00,2026-07-08T21:00:00,mock_dw_fato_restricao_coff_horario
+8,Rei dos Ventos 3,eolica,60.12,NE,-5.11899151,-36.16319865,,EOL.CV.RN.030417-4,33.066,27061.018,3639.474,13.45,5,2026-01-01T00:30:00,2026-07-08T22:30:00,mock_dw_fato_restricao_coff_horario
+2,Icaraizinho,eolica,54.6,NE,-3.01786514,-39.67407146,,EOL.CV.CE.028699-0,30.03,26129.982,4106.796,15.72,6,2026-01-01T00:00:00,2026-07-08T23:30:00,mock_dw_fato_restricao_coff_horario
+5,Alegria I,eolica,51.0,NE,-5.09435278,-36.36287521,,EOL.CV.RN.028444-0,28.05,20870.497,2122.909,10.17,7,2026-01-01T00:30:00,2026-07-08T23:30:00,mock_dw_fato_restricao_coff_horario
+3,Malhadinha 1,eolica,23.1,NE,-3.94661349,-41.12303536,,EOL.CV.CE.030841-2,12.705,8745.673,1940.041,22.18,8,2026-01-01T00:00:00,2026-07-08T23:30:00,mock_dw_fato_restricao_coff_horario
+9,Pitombeira,solar,47.25,NE,-4.60098333,-37.64212222,,UFV.RS.CE.034037-5,25.988,20747.985,2330.874,11.23,1,2026-01-01T06:30:00,2026-07-08T17:00:00,mock_dw_fato_restricao_coff_horario
+10,Assú V,solar,34.0,NE,-5.54600429,-37.02639026,,UFV.RS.RN.034184-3,18.7,9045.245,1025.699,11.34,2,2026-01-01T06:00:00,2026-07-08T16:30:00,mock_dw_fato_restricao_coff_horario

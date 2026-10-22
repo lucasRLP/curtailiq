@@ -16,6 +16,13 @@ COPY lambda_handler.py ${LAMBDA_TASK_ROOT}/lambda_handler.py
 # base + deliberately absent model paths selects its heuristic fallback.
 # Pickles/notebooks are excluded: no unvalidated model is promoted by this image.
 ENV DATA_BACKEND=mock \
+    MOCK_DATA_DIR=data/local_demo \
+    CACHE_ENABLED=true \
+    CACHE_MAX_ENTRIES=256 \
+    CACHE_USINAS_TTL_SECONDS=1800 \
+    CACHE_FINANCEIRO_TTL_SECONDS=1800 \
+    API_HTTP_CACHE_SECONDS=60 \
+    API_HTTP_STALE_WHILE_REVALIDATE_SECONDS=300 \
     BEDROCK_ENABLED=false \
     MVP_ONLY_NORDESTE=true \
     CURTAILMENT_MODEL_MODE=base \

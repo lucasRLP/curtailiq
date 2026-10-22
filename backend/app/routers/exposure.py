@@ -6,6 +6,7 @@ from typing import Literal
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.config import Settings, get_settings
+from app.deps import get_mock_repository
 from app.domain.exposure_contracts import ExposureSeriesV1
 from app.repositories.exposure_adapter import LocalExposureRepository
 from app.repositories.mock_repo import MockRepository
@@ -34,7 +35,7 @@ def _utc_range(start: datetime | None, end: datetime | None) -> tuple[datetime, 
 
 def _fixture_repo(settings: Settings = Depends(get_settings)) -> MockRepository:
     """Explicit local-only provider; independent of DATA_BACKEND/get_repo."""
-    return MockRepository(mvp_only_nordeste=True, data_dir=settings.mock_data_dir)
+    return get_mock_repository(True, settings.mock_data_dir)
 
 
 def _adapter(repository) -> LocalExposureRepository:

@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 
 from fastapi import Depends
@@ -44,12 +45,18 @@ pleito_cache = TTLCache(
 )
 
 
+@lru_cache(maxsize=4)
+def get_mock_repository(mvp_only_nordeste: bool, data_dir: str | None) -> MockRepository:
+    """Reuse static CSV fixtures per process; clear the cache to reload changed files."""
+    return MockRepository(mvp_only_nordeste=mvp_only_nordeste, data_dir=data_dir)
+
+
 def get_repo(settings: Settings = Depends(get_settings), db=Depends(get_db_session)) -> BaseRepository:
     if settings.data_backend == "postgres":
         from app.repositories.postgres_repo import PostgresRepository
 
         return PostgresRepository(db=db, mvp_only_nordeste=settings.mvp_only_nordeste)
-    return MockRepository(mvp_only_nordeste=settings.mvp_only_nordeste, data_dir=settings.mock_data_dir)
+    return get_mock_repository(settings.mvp_only_nordeste, settings.mock_data_dir)
 
 
 def get_financeiro_service(repo: BaseRepository = Depends(get_repo)) -> FinanceiroService:

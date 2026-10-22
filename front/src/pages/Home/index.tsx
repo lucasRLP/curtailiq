@@ -19,9 +19,9 @@ import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/brand/Logo"
 
 const STATS = [
-  { value: "20,6%", label: "da geração renovável cortada no Brasil em 2025" },
-  { value: "R$ 6,5 bi", label: "em prejuízo distribuídos por ~1.500 usinas" },
-  { value: "35%", label: "de corte médio nas solares do Nordeste" },
+  { value: "Histórico", label: "snapshot local para explorar o portfólio" },
+  { value: "Cenários", label: "estimativas demonstrativas, não apuração oficial" },
+  { value: "Local", label: "sem conexão com banco de dados ao vivo" },
 ]
 
 const ELOS = [
@@ -29,7 +29,7 @@ const ELOS = [
     num: "01",
     tag: "Físico · ML",
     title: "Antecipe o corte",
-    desc: "Nosso modelo de ML cruza dados climáticos abertos, a programação DESSEM e o histórico do ONS para prever com antecedência quando e quanto sua usina vai ser cortada.",
+    desc: "Explore cenários demonstrativos de corte a partir do snapshot histórico local. As estimativas não são previsões operacionais validadas nem dados em tempo real.",
     icon: TrendingDown,
     glow: "rgba(144,133,233,0.15)",
     accent: "text-[#9085e9]",
@@ -40,7 +40,7 @@ const ELOS = [
     num: "02",
     tag: "Financeiro · Risco",
     title: "Quantifique a perda",
-    desc: "Cada hora cortada vira um número: MWh multiplicado pelo PLD. A partir daí você vê a exposição projetada, simula re-hedge e monta o business case de uma bateria com os dados reais da usina.",
+    desc: "Explore a relação entre MWh cortados e PLD no snapshot histórico local. Simulações de exposição, re-hedge e bateria são cenários estimados para demonstração.",
     icon: DollarSign,
     glow: "rgba(230,103,103,0.15)",
     accent: "text-[#e66767]",
@@ -51,7 +51,7 @@ const ELOS = [
     num: "03",
     tag: "Regulatório · IA",
     title: "Recupere o ressarcível",
-    desc: "Cada corte é classificado automaticamente pela motivação regulatória, com base na REN 1.030/2022 e na Lei 15.269/2025. A IA monta o dossiê de pleito e responde dúvidas sobre as normas vigentes.",
+    desc: "Explore um rascunho de enquadramento regulatório e dossiê com o snapshot local. Não é apuração oficial e exige revisão especializada; o assistente depende de configuração do provedor.",
     icon: ShieldCheck,
     glow: "rgba(43,184,148,0.15)",
     accent: "text-[#2bb894]",
@@ -79,8 +79,8 @@ const FEATURES = [
   },
   {
     icon: AlertTriangle,
-    title: "Risco em tempo real",
-    desc: "Probabilidade e magnitude de curtailment nas próximas 48h por planta do seu portfólio.",
+    title: "Cenário de risco",
+    desc: "Estimativas demonstrativas por usina a partir do snapshot histórico local, sem monitoramento ao vivo.",
   },
   {
     icon: DollarSign,
@@ -100,7 +100,7 @@ const FEATURES = [
   {
     icon: Bot,
     title: "Assistente regulatório",
-    desc: "Chat com IA contextualizado à usina, com respostas baseadas em REN 1.030/2022 e CCEE.",
+    desc: "Assistente contextualizado à usina; disponibilidade depende da configuração do provedor de IA. Respostas exigem revisão.",
   },
 ]
 
@@ -112,9 +112,9 @@ const DATA_SOURCES = [
 ]
 
 const TECH_FACTS = [
-  { icon: Database, value: "82M+", label: "registros reais do ONS processados" },
-  { icon: BrainCircuit, value: "3 modelos", label: "ML com fallback inteligente (advanced → RF → sazonal)" },
-  { icon: MapPin, value: "H3", label: "indexação geoespacial de usinas por cluster regional" },
+  { icon: Database, value: "Snapshot local", label: "recorte histórico disponível nesta demonstração" },
+  { icon: BrainCircuit, value: "Cenário demonstrativo", label: "estimativas sem alegação de modelos validados em produção" },
+  { icon: MapPin, value: "Portfólio", label: "localização das usinas disponíveis no recorte local" },
 ]
 
 export default function Home() {
@@ -180,7 +180,7 @@ export default function Home() {
               <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
                   <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Painel CurtailIQ</p>
-                  <p className="mt-1 text-sm text-slate-200">Análise operacional e regulatória</p>
+                  <p className="mt-1 text-sm text-slate-200">Cenário ilustrativo · não é dado da API</p>
                 </div>
                 <div className="rounded-full border border-[#2bb894]/25 bg-[#2bb894]/10 px-3 py-1 text-xs font-medium text-[#bfeade]">
                   NE renováveis
@@ -197,7 +197,7 @@ export default function Home() {
                     <div className="h-full w-[76%] rounded-full bg-gradient-to-r from-[#e66767] to-[#eda100]" />
                   </div>
                   <p className="mt-4 text-3xl font-semibold tracking-tight text-white">R$ 8,9 mi</p>
-                  <p className="mt-1 text-xs text-slate-500">projeção energética futura · ML</p>
+                  <p className="mt-1 text-xs text-slate-400">valor ilustrativo de cenário · não apurado</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -297,11 +297,11 @@ export default function Home() {
             <div className="max-w-lg">
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-[#2bb894]">Base de dados</p>
               <h2 className="font-heading text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                Dados públicos reais. Zero estimativa inventada.
+                Snapshot histórico local. Cenários estimados com transparência.
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-slate-400">
-              Cada número que você vê aqui vem de fontes abertas verificáveis. São os mesmos dados que a CCEE e o ONS usam para operar o sistema elétrico brasileiro.
+              Esta demonstração usa um recorte histórico local, sem banco ao vivo. Valores projetados são cenários demonstrativos, não apuração oficial. As fontes abaixo são referências de domínio, não integrações ativas garantidas.
             </p>
           </div>
 
