@@ -1,6 +1,7 @@
 {
  "Version":"2012-10-17",
  "Statement":[
+  {"Sid":"InvalidateOnlyTaggedProjectDistribution","Effect":"Allow","Action":["cloudfront:CreateInvalidation","cloudfront:GetInvalidation"],"Resource":"arn:aws:cloudfront::${AWS_ACCOUNT_ID}:distribution/*","Condition":{"StringEquals":{"aws:ResourceTag/Project":"curtailai"}}},
   {"Sid":"EcrLoginGlobalRequired","Effect":"Allow","Action":"ecr:GetAuthorizationToken","Resource":"*"},
   {"Sid":"PublishExistingImageRepository","Effect":"Allow","Action":["ecr:BatchCheckLayerAvailability","ecr:CompleteLayerUpload","ecr:InitiateLayerUpload","ecr:PutImage","ecr:UploadLayerPart","ecr:BatchGetImage","ecr:GetDownloadUrlForLayer","ecr:DescribeImages","ecr:DescribeRepositories"],"Resource":"arn:aws:ecr:${AWS_REGION}:${AWS_ACCOUNT_ID}:repository/curtailai/backend"},
   {"Sid":"NamedStackChangesWithExecutionRole","Effect":"Allow","Action":["cloudformation:CreateChangeSet","cloudformation:CreateStack","cloudformation:UpdateStack"],"Resource":"arn:aws:cloudformation:${AWS_REGION}:${AWS_ACCOUNT_ID}:stack/curtailai-demo/*","Condition":{"ArnEquals":{"cloudformation:RoleArn":"arn:aws:iam::${AWS_ACCOUNT_ID}:role/curtailai-cloudformation-execution"}}},

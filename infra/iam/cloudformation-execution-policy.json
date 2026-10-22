@@ -1,6 +1,7 @@
 {
  "Version":"2012-10-17",
  "Statement":[
+  {"Sid":"ManageOnlyNamedSpaRouter","Effect":"Allow","Action":["cloudfront:CreateFunction","cloudfront:DescribeFunction","cloudfront:GetFunction","cloudfront:UpdateFunction","cloudfront:PublishFunction","cloudfront:DeleteFunction","cloudfront:TagResource","cloudfront:UntagResource","cloudfront:ListTagsForResource"],"Resource":"arn:aws:cloudfront::${AWS_ACCOUNT_ID}:function/curtailai-demo-spa-router"},
   {"Sid":"LogGroupDiscoveryRequiresGlobalResource","Effect":"Allow","Action":"logs:DescribeLogGroups","Resource":"*"},
   {"Sid":"BackendImageFunction","Effect":"Allow","Action":["lambda:CreateFunction","lambda:DeleteFunction","lambda:GetFunction","lambda:GetFunctionConfiguration","lambda:UpdateFunctionCode","lambda:UpdateFunctionConfiguration","lambda:AddPermission","lambda:RemovePermission","lambda:GetPolicy","lambda:CreateFunctionUrlConfig","lambda:DeleteFunctionUrlConfig","lambda:GetFunctionUrlConfig","lambda:UpdateFunctionUrlConfig","lambda:TagResource","lambda:UntagResource","lambda:ListTags","lambda:PutRuntimeManagementConfig"],"Resource":"arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:curtailai-backend"},
   {"Sid":"PrecreatedRepositoryImagePull","Effect":"Allow","Action":["ecr:BatchGetImage","ecr:GetDownloadUrlForLayer","ecr:GetRepositoryPolicy"],"Resource":"arn:aws:ecr:${AWS_REGION}:${AWS_ACCOUNT_ID}:repository/curtailai/backend"},

@@ -39,6 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
@@ -54,7 +55,8 @@ jobs:
           VITE_API_BASE: /api
         run: |
           npm ci
-          npm run lint
+          node --test ../scripts/ci/test_frontend_lint.cjs
+          node ../scripts/ci/frontend-lint.cjs
           npm run test --if-present
           npm run build
       - name: Explicit pending frontend gate

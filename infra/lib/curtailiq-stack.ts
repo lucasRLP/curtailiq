@@ -71,8 +71,23 @@ export class CurtailIQStack extends cdk.Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL, removalPolicy: cdk.RemovalPolicy.RETAIN, enforceSSL: true,
     });
     const apiDomain = cdk.Fn.select(2, cdk.Fn.split('/', fnUrl.url));
+    const spaRouter = new cloudfront.Function(this, 'SpaRouter', {
+      functionName: 'curtailai-demo-spa-router',
+      code: cloudfront.FunctionCode.fromInline(`function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+  if (uri === '/' || uri === '/curtailai') {
+    return {statusCode: 302, headers: {location: {value: '/curtailai/'}}};
+  }
+  if (uri.indexOf('/curtailai/') === 0 && uri.split('/').pop().indexOf('.') === -1) {
+    request.uri = '/curtailai/index.html';
+  }
+  return request;
+}`),
+    });
     const distribution = new cloudfront.Distribution(this, 'FrontendDist', {
       defaultBehavior: { origin: origins.S3BucketOrigin.withOriginAccessControl(frontendBucket),
+        functionAssociations: [{ function: spaRouter, eventType: cloudfront.FunctionEventType.VIEWER_REQUEST }],
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED },
       additionalBehaviors: { '/api/*': { origin: new origins.HttpOrigin(apiDomain, { protocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY }),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
