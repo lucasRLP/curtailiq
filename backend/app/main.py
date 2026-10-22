@@ -60,6 +60,10 @@ async def api_cache_headers(request: Request, call_next):
         response.headers.setdefault("Vary", "Origin")
     return response
 
+from app.routers.exposure import router as exposure_router
+from app.routers.maintenance_scenario import router as maintenance_scenario_router
+app.include_router(exposure_router)
+app.include_router(maintenance_scenario_router)
 app.include_router(usinas_router)
 app.include_router(financeiro_router)
 app.include_router(regulatorio_router)

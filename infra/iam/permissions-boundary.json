@@ -1,0 +1,4 @@
+{
+ "Version":"2012-10-17",
+ "Statement":[{"Sid":"RuntimeLogsOnly","Effect":"Allow","Action":["logs:CreateLogStream","logs:PutLogEvents"],"Resource":"arn:aws:logs:${AWS_REGION}:${AWS_ACCOUNT_ID}:log-group:/aws/lambda/curtailai-backend:log-stream:*"}]
+}

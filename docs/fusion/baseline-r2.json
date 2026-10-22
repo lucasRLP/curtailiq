@@ -1,0 +1,73 @@
+{
+  "base_sha": "f6972e0a5f6e59d433928e7c60ccfc7faa734306",
+  "worktree": "C:/Users/lucas/Documents/curtailiq-fusion-workspace/baseline",
+  "scope": "Reexecucao pytest do backend no baseline; nenhuma alteracao de codigo no baseline ou integration",
+  "cwd": "C:/Users/lucas/documents/curtailiq-fusion-workspace/baseline/backend",
+  "command": "DATA_BACKEND=mock uv run --directory C:/Users/lucas/documents/curtailiq-fusion-workspace/baseline/backend --with pytest python -m pytest -q -ra --basetemp=C:/Users/lucas/documents/curtailiq-fusion-workspace/test-temp/baseline-r2 --junitxml=C:/Users/lucas/documents/curtailiq-fusion-workspace/integration/docs/fusion/evidence/baseline-r2.junit.xml",
+  "exit_code": 1,
+  "environment": {
+    "python": "3.11.13",
+    "pytest": "9.1.1",
+    "pandas": "3.0.3",
+    "python_docx": "1.2.0",
+    "fastapi": "0.136.3",
+    "executable": "C:/Users/lucas/AppData/Local/uv/cache/builds-v0/.tmpljpCTY/Scripts/python.exe",
+    "app_main_file": "C:/Users/lucas/documents/curtailiq-fusion-workspace/baseline/backend/app/main.py",
+    "pandas_importable": true,
+    "docx_importable": true
+  },
+  "counts": {
+    "collected_and_run": 161,
+    "passed": 142,
+    "failed": 17,
+    "errors": 0,
+    "skipped": 2
+  },
+  "failure_type": "AttributeError",
+  "failure_message": "'FinanceiroPolicy' object has no attribute 'is_elegivel'",
+  "failed_nodeids": [
+    "tests.test_endpoints_smoke.TestEndpointsSmoke.test_export_dossie_formato_invalido",
+    "tests.test_endpoints_smoke.TestEndpointsSmoke.test_export_dossie_json",
+    "tests.test_endpoints_smoke.TestEndpointsSmoke.test_export_dossie_markdown",
+    "tests.test_endpoints_smoke.TestEndpointsSmoke.test_fluxo_ressarcimento",
+    "tests.test_endpoints_smoke.TestEndpointsSmoke.test_perda_paginada",
+    "tests.test_financeiro_service.TestFinanceiroService.test_calcular_perda",
+    "tests.test_financeiro_service.TestFinanceiroService.test_calcular_perda_eventiza_intervalos_e_preserva_total_financeiro",
+    "tests.test_financeiro_service.TestFinanceiroService.test_calcular_perda_expoe_referencia_oficial_do_calculo_ons",
+    "tests.test_financeiro_service.TestFinanceiroService.test_calcular_perda_marca_qualidade_quando_falta_pld",
+    "tests.test_financeiro_service.TestFinanceiroService.test_calcular_perda_sem_pld_retorna_zero_com_flag",
+    "tests.test_financeiro_service.TestFinanceiroService.test_calcular_perda_serie_e_eventos_fecham_com_total_arredondado",
+    "tests.test_financeiro_service.TestFinanceiroService.test_fallback_razao_por_codigo_reduz_indefinido",
+    "tests.test_regulatorio_service.TestRegulatorioService.test_cache_dossie",
+    "tests.test_regulatorio_service.TestRegulatorioService.test_executar_fluxo_ressarcimento",
+    "tests.test_regulatorio_service.TestRegulatorioService.test_exportar_dossie_json",
+    "tests.test_regulatorio_service.TestRegulatorioService.test_exportar_dossie_markdown",
+    "tests.test_regulatorio_service.TestRegulatorioService.test_gerar_dossie"
+  ],
+  "financeiro_policy_empirical_check": {
+    "class_module": "app.domain.policies",
+    "instance": "FinanceiroPolicy.default()",
+    "has_is_elegivel": false,
+    "callable_is_elegivel": false,
+    "conclusion": "As 17 falhas relacionadas a is_elegivel reproduzem no SHA base solicitado; sem alteracao de codigo nesta tarefa."
+  },
+  "evidence": {
+    "stdout": {"path": "docs/fusion/evidence/baseline-r2.stdout.log", "sha256": "218e449821a3e5b3b07ebb1e63724f589d244e9e6a698b0e737ed38f4ab7af91"},
+    "stderr": {"path": "docs/fusion/evidence/baseline-r2.stderr.log", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+    "exit_code": {"path": "docs/fusion/evidence/baseline-r2.exit_code", "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"},
+    "junit_xml": {"path": "docs/fusion/evidence/baseline-r2.junit.xml", "sha256": "332687158a00903a417cc3ce9cec067652e538db36a52ccda0d6c29e8b46e99e"}
+  },
+  "integrity": {
+    "baseline_head_before_run": "f6972e0a5f6e59d433928e7c60ccfc7faa734306",
+    "baseline_status_before_run": "clean",
+    "baseline_status_after_run": "clean (somente HEAD foi impresso apos o run; pacote/venv gerido por uv e temp isolado conforme comando)",
+    "data_backend": "mock",
+    "network_dependencies_resolved": true,
+    "database_credentials_env_or_notebooks_accessed": false
+  },
+  "limitations": [
+    "O resultado confirma reproducao no baseline local com as dependencias resolvidas; nao identifica a origem historica das falhas.",
+    "Nenhum codigo foi corrigido nesta tarefa.",
+    "app e namespace package e app.__file__ e None; o modulo de aplicacao app.main.__file__ foi confirmado no caminho do baseline."
+  ]
+}

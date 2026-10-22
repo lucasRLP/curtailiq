@@ -1,0 +1,61 @@
+name: CurtailAI deploy
+on:
+  push:
+    branches: [main, feat/curtailai-deploy]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: curtailai-demo-deploy
+  cancel-in-progress: false
+jobs:
+  validate:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/curtailai-ci.yml
+  deploy:
+    needs: validate
+    if: github.repository == 'lucasRLP/curtailiq' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/curtailai-deploy')))
+    runs-on: ubuntu-latest
+    environment: curtailai-demo
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+      AWS_CFN_EXECUTION_ROLE_ARN: ${{ vars.AWS_CFN_EXECUTION_ROLE_ARN }}
+      AWS_RUNTIME_BOUNDARY_ARN: ${{ vars.AWS_RUNTIME_BOUNDARY_ARN }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: curtailai-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release
+      - name: Validate inputs before credentials
+        run: |
+          test "$(<release/revision.txt)" = "$GITHUB_SHA"
+          (cd release && sha256sum --check SHA256SUMS)
+          [[ "$AWS_ROLE_ARN" =~ ^arn:aws:iam::[0-9]{12}:role/.+ ]]
+          [[ "$AWS_CFN_EXECUTION_ROLE_ARN" =~ ^arn:aws:iam::[0-9]{12}:role/.+ ]]
+          [[ "$AWS_RUNTIME_BOUNDARY_ARN" =~ ^arn:aws:iam::[0-9]{12}:policy/.+ ]]
+          [[ "$AWS_REGION" == us-east-1 ]]
+      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: curtailai-${{ github.run_id }}
+      - run: bash scripts/ci/deploy-image.sh
+      - name: Preserve actual outputs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: deployment-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            release/outputs.json
+            release/deployed-digest.txt
+            release/revision.txt
+          if-no-files-found: warn

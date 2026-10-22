@@ -1,0 +1,32 @@
+# Python 3.12 uses Amazon Linux 2023 (glibc 2.34), compatible with
+# the lock's CPython 3.12 x86_64 manylinux_2_28 wheel floor.
+# Build on Linux: docker build --platform linux/amd64 -f backend/Dockerfile.lambda backend
+FROM public.ecr.aws/lambda/python:3.12
+
+COPY requirements-lambda-image.txt ${LAMBDA_TASK_ROOT}/requirements-lambda-image.txt
+RUN pip install --no-cache-dir --require-hashes --only-binary=:all: \
+    --requirement ${LAMBDA_TASK_ROOT}/requirements-lambda-image.txt \
+    --target ${LAMBDA_TASK_ROOT} && pip check
+
+COPY app ${LAMBDA_TASK_ROOT}/app
+COPY data ${LAMBDA_TASK_ROOT}/data
+COPY lambda_handler.py ${LAMBDA_TASK_ROOT}/lambda_handler.py
+
+# 'demo' is NOT accepted by current Settings. Keep the existing engine intact:
+# base + deliberately absent model paths selects its heuristic fallback.
+# Pickles/notebooks are excluded: no unvalidated model is promoted by this image.
+ENV DATA_BACKEND=mock \
+    MOCK_DATA_DIR=data/local_demo \
+    CACHE_ENABLED=true \
+    CACHE_MAX_ENTRIES=256 \
+    CACHE_USINAS_TTL_SECONDS=1800 \
+    CACHE_FINANCEIRO_TTL_SECONDS=1800 \
+    API_HTTP_CACHE_SECONDS=60 \
+    API_HTTP_STALE_WHILE_REVALIDATE_SECONDS=300 \
+    BEDROCK_ENABLED=false \
+    MVP_ONLY_NORDESTE=true \
+    CURTAILMENT_MODEL_MODE=base \
+    CURTAILMENT_MODEL_PATH=/opt/curtailai-demo-disabled/base.pkl \
+    CURTAILMENT_MODEL_ADVANCED_PATH=/opt/curtailai-demo-disabled/advanced.pkl
+
+CMD ["lambda_handler.handler"]

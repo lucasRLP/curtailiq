@@ -1,0 +1,83 @@
+name: CurtailAI CI
+on:
+  pull_request:
+  push:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: curtailai-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m pip install uv==0.8.8
+      - run: python -m unittest discover -s scripts/ci -p 'test_*.py' -v
+      - run: bash scripts/ci/backend-regression.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: regression-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            docs/fusion/evidence/ci-*/*.log
+            docs/fusion/evidence/ci-*/*.xml
+            docs/fusion/evidence/ci-*/*.json
+            docs/fusion/evidence/ci-*/*.exit_code
+            docs/fusion/evidence/ci-*/*.txt
+            docs/fusion/evidence/ci-*/*.sha
+          if-no-files-found: error
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Real image build and isolated handler smoke without credentials
+        run: bash scripts/ci/build-image.sh
+      - name: Frontend build lint and available tests
+        working-directory: front
+        env:
+          VITE_API_BASE: /api
+        run: |
+          npm ci
+          node --test ../scripts/ci/test_frontend_lint.cjs
+          node ../scripts/ci/frontend-lint.cjs
+          npm run test --if-present
+          npm run build
+      - name: Explicit pending frontend gate
+        run: python scripts/ci/frontend-gate.py
+      - name: Credential-free synth
+        working-directory: infra
+        run: |
+          npm ci
+          npm run build
+          npm run test:assertions
+          npx cdk synth --no-lookups --quiet
+      - name: Seal same-SHA release
+        run: |
+          cp -a front/dist release/dist
+          cp infra/cdk.out/curtailai-demo.template.json release/template.json
+          cd release
+          find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: curtailai-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 1

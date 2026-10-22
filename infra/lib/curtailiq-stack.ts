@@ -1,92 +1,107 @@
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as ecr from 'aws-cdk-lib/aws-ecr';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 
 export class CurtailIQStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // ── Backend: FastAPI via Mangum ─────────────────────────────────────────
+    const imageDigest = new cdk.CfnParameter(this, 'ImageDigest', {
+      type: 'String', description: 'Immutable ECR image digest sha256:<64 lowercase hex>.',
+      allowedPattern: '^sha256:[a-f0-9]{64}$',
+      constraintDescription: 'Must be an immutable sha256 digest.',
+    });
+    const permissionsBoundaryArn = new cdk.CfnParameter(this, 'PermissionsBoundaryArn', {
+      type: 'String', description: 'ARN of the approved runtime IAM permissions boundary.',
+      allowedPattern: '^arn:[^:]+:iam::[0-9]{12}:policy/.+$',
+      constraintDescription: 'Must be the ARN of an IAM managed policy boundary.',
+    });
 
-    const backendFn = new lambda.Function(this, 'BackendFn', {
-      functionName: 'curtailiq-backend',
-      runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'lambda_handler.handler',
-      code: lambda.Code.fromAsset('lambda-bundle'),
-      timeout: cdk.Duration.seconds(60),
-      memorySize: 1024,
+    const backendLogGroup = new logs.LogGroup(this, 'BackendLogGroup', {
+      logGroupName: '/aws/lambda/curtailai-backend',
+      retention: logs.RetentionDays.ONE_MONTH,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+    const runtimeRole = new iam.Role(this, 'BackendRuntimeRole', {
+      roleName: cdk.Fn.join('', ['curtailai-demo-', cdk.Aws.STACK_NAME, '-runtime']),
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      permissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(this, 'RuntimeBoundary', permissionsBoundaryArn.valueAsString),
+    });
+    runtimeRole.addToPolicy(new iam.PolicyStatement({
+      actions: ['logs:CreateLogStream', 'logs:PutLogEvents'],
+      resources: [backendLogGroup.logGroupArn + ':*'],
+    }));
+
+    const repository = ecr.Repository.fromRepositoryName(this, 'BackendRepository', 'curtailai/backend');
+    const backendFn = new lambda.DockerImageFunction(this, 'BackendFn', {
+      functionName: 'curtailai-backend',
+      code: lambda.DockerImageCode.fromEcr(repository),
+      architecture: lambda.Architecture.X86_64,
+      role: runtimeRole,
+      timeout: cdk.Duration.seconds(60), memorySize: 1024,
       environment: {
-        DATA_BACKEND: 'mock',
-        CORS_ORIGINS: '*',
+        DATA_BACKEND: 'mock', MOCK_DATA_DIR: 'data/local_demo', CORS_ORIGINS: '*', BEDROCK_ENABLED: 'false', MVP_ONLY_NORDESTE: 'true',
+        CACHE_ENABLED: 'true', CACHE_MAX_ENTRIES: '256',
+        CACHE_USINAS_TTL_SECONDS: '1800', CACHE_FINANCEIRO_TTL_SECONDS: '1800',
+        CACHE_REGULATORIO_TTL_SECONDS: '1800', CACHE_BESS_TTL_SECONDS: '900',
+        API_HTTP_CACHE_SECONDS: '60', API_HTTP_STALE_WHILE_REVALIDATE_SECONDS: '300',
+        // Settings rejects 'demo'; absent pickle paths force the existing demo heuristic.
         CURTAILMENT_MODEL_MODE: 'base',
+        CURTAILMENT_MODEL_PATH: '/opt/curtailai-demo-disabled/base.pkl',
+        CURTAILMENT_MODEL_ADVANCED_PATH: '/opt/curtailai-demo-disabled/advanced.pkl',
       },
+      logGroup: backendLogGroup,
     });
-
-    // Lambda Function URL — substitui API Gateway (não disponível nesta conta)
-    const fnUrl = backendFn.addFunctionUrl({
-      authType: lambda.FunctionUrlAuthType.NONE,
-      cors: {
-        allowedOrigins: ['*'],
-        allowedMethods: [lambda.HttpMethod.ALL],
-        allowedHeaders: ['*'],
-        allowCredentials: false,
-      },
+    (backendFn.node.defaultChild as lambda.CfnFunction).code = {
+      imageUri: cdk.Fn.join('', [repository.repositoryUri, '@', imageDigest.valueAsString]),
+    };
+    const concurrency = process.env.CURTAILIQ_RESERVED_CONCURRENCY;
+    if (concurrency) {
+      const parsed = Number(concurrency);
+      if (!Number.isInteger(parsed) || parsed < 1) throw new Error('CURTAILIQ_RESERVED_CONCURRENCY must be a positive integer');
+      (backendFn.node.defaultChild as lambda.CfnFunction).reservedConcurrentExecutions = parsed;
+    }
+    const fnUrl = backendFn.addFunctionUrl({ authType: lambda.FunctionUrlAuthType.NONE,
+      cors: { allowedOrigins: ['*'], allowedMethods: [lambda.HttpMethod.ALL], allowedHeaders: ['*'], allowCredentials: false },
     });
-
-    // ── Frontend: S3 + CloudFront (HTTPS, SPA routing) ─────────────────────
-
     const frontendBucket = new s3.Bucket(this, 'FrontendBucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-      // Bucket privado — acesso somente via CloudFront (OAC)
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      bucketName: cdk.Fn.join('', ['curtailai-frontend-', cdk.Aws.ACCOUNT_ID, '-', cdk.Aws.REGION]),
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL, removalPolicy: cdk.RemovalPolicy.RETAIN, enforceSSL: true,
     });
-
+    const apiDomain = cdk.Fn.select(2, cdk.Fn.split('/', fnUrl.url));
+    const spaRouter = new cloudfront.Function(this, 'SpaRouter', {
+      functionName: 'curtailai-demo-spa-router',
+      code: cloudfront.FunctionCode.fromInline(`function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+  if (uri === '/' || uri === '/curtailai') {
+    return {statusCode: 302, headers: {location: {value: '/curtailai/'}}};
+  }
+  if (uri.indexOf('/curtailai/') === 0 && uri.split('/').pop().indexOf('.') === -1) {
+    request.uri = '/curtailai/index.html';
+  }
+  return request;
+}`),
+    });
     const distribution = new cloudfront.Distribution(this, 'FrontendDist', {
-      defaultBehavior: {
-        origin: origins.S3BucketOrigin.withOriginAccessControl(frontendBucket),
-        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
-      },
+      defaultBehavior: { origin: origins.S3BucketOrigin.withOriginAccessControl(frontendBucket),
+        functionAssociations: [{ function: spaRouter, eventType: cloudfront.FunctionEventType.VIEWER_REQUEST }],
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED },
+      additionalBehaviors: { '/api/*': { origin: new origins.HttpOrigin(apiDomain, { protocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY }),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+        originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER_EXCEPT_HOST_HEADER, allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL } },
       defaultRootObject: 'index.html',
-      // React Router: todas as rotas não encontradas servem index.html
-      errorResponses: [
-        {
-          httpStatus: 403,
-          responseHttpStatus: 200,
-          responsePagePath: '/index.html',
-        },
-        {
-          httpStatus: 404,
-          responseHttpStatus: 200,
-          responsePagePath: '/index.html',
-        },
-      ],
     });
-
-    // ── Outputs ─────────────────────────────────────────────────────────────
-
-    new cdk.CfnOutput(this, 'FunctionUrl', {
-      value: fnUrl.url,
-      description: 'Lambda Function URL do backend — use como VITE_API_BASE (com /api no fim)',
-    });
-
-    new cdk.CfnOutput(this, 'CloudFrontUrl', {
-      value: `https://${distribution.distributionDomainName}`,
-      description: 'URL pública do frontend (HTTPS)',
-    });
-
-    new cdk.CfnOutput(this, 'BucketName', {
-      value: frontendBucket.bucketName,
-      description: 'Bucket S3 — faça upload do front/dist/ aqui após o build',
-    });
-
-    new cdk.CfnOutput(this, 'DistributionId', {
-      value: distribution.distributionId,
-      description: 'ID da distribuição CloudFront — para invalidar cache após upload',
-    });
+    cdk.Tags.of(this).add('Project', 'curtailai');
+    new cdk.CfnOutput(this, 'FunctionUrl', { value: fnUrl.url, description: 'Endpoint direto público do Lambda; bypassa CloudFront.' });
+    new cdk.CfnOutput(this, 'CloudFrontUrl', { value: `https://${distribution.distributionDomainName}`, description: 'Frontend e API via /api/*.' });
+    new cdk.CfnOutput(this, 'BucketName', { value: frontendBucket.bucketName });
+    new cdk.CfnOutput(this, 'DistributionId', { value: distribution.distributionId });
   }
 }

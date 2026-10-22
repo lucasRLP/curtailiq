@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsc",
+    "test:assertions": "ts-node test/stack.test.ts && ts-node test/spa.test.ts",
     "cdk": "cdk"
   },
   "dependencies": {
